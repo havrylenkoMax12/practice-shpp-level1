@@ -14,56 +14,84 @@ public class GenericMatrix<T extends Number> {
 
     // Конструктор
     public GenericMatrix(T minimum, T maximum, T increment) {
-        this.minimum = Math.min(minimum.doubleValue(), maximum.doubleValue());
-        this.maximum = Math.max(minimum.doubleValue(), maximum.doubleValue());
-        this.increment = Math.abs(increment.doubleValue());
+        this.minimum = minimum;
+        this.maximum = maximum;
+        this.increment = increment;
     }
 
-    public int calculate() {
-        List<T> numbers = fillList();
-        int size = numbers.size();
+    public Object[] calculate() {
+        try {
+            List<T> numbers = fillList();
+            int size = numbers.size();
 
-        int sizeTable = 0;
-        for (T number : numbers) {
-            for (int j = 0; j < size; j++) {
-                double first = number.doubleValue();
-                double second = numbers.get(j).doubleValue();
-                printT(first, second);
-                sizeTable++;
+            Object[] resultedArray = new Object[size*size];
+            int counter = 0;
+
+            for (int i = 0; i < size; i++) {
+                for (T number : numbers) {
+                    T first = numbers.get(i);
+                    T second = number;
+
+                    Object sum = printT(first, second);
+                    resultedArray[counter++] = sum;
+                }
             }
-        }
 
-        return sizeTable;
+            return resultedArray;
+        } catch (RuntimeException e) {
+            //noinspection CallToPrintStackTrace
+            e.printStackTrace();
+            return null;
+        }
     }
 
-    private void printT(double first, double second){
+    private Object printT(T first, T second){
+        double resultValue = first.doubleValue() * second.doubleValue();
+        Object result = null;
         if(minimum instanceof Double || minimum instanceof Float){
-            BigDecimal valuePow = BigDecimal.valueOf(first * second);
-            System.out.println(convertToT(first) + " * " + convertToT(second) + " = " + valuePow);
+            result = BigDecimal.valueOf(resultValue);
+            System.out.println(first + " * " + second + " = " + result);
+            return result;
         } else if(minimum instanceof Long || minimum instanceof Short || minimum instanceof Integer || minimum instanceof Byte){
-            System.out.println(convertToT(first) + " * " + convertToT(second) + " = " + BigInteger.valueOf(Math.round(first * second)));
+            result = BigInteger.valueOf(Math.round(resultValue));
+            System.out.println(first.intValue() + " * " + second + " = " + result);
         }
+        return result;
     }
 
     private List<T> fillList() {
-        if (increment.floatValue()== 0) {
+        if (increment.floatValue() == 0) {
             throw new RuntimeException("Increment must be greater than zero");
         }
         int counter = 0;
 
+        double current;
+        double maximumValue;
+        double incrementValue = Math.abs(increment.floatValue());
+        if(isMaximumBiggerThanMinimum()){
+            current = minimum.doubleValue();
+            maximumValue = maximum.doubleValue();
+        }else{
+            current = maximum.doubleValue();
+            maximumValue = minimum.doubleValue();
+        }
+
         List<T> numbers = new ArrayList<>();
-        double current = minimum.doubleValue();
-        while (current <= maximum.doubleValue()) {
+
+        while (current <= maximumValue) {
             counter++;
             numbers.add(convertToT(current));
-            current+=increment.doubleValue();
+            current+= incrementValue;
             if (counter >= THRESHOLD) {
                 System.out.println("Counter more than threshold");
                 break;
             }
         }
-        System.out.println(counter);
         return numbers;
+    }
+
+    private boolean isMaximumBiggerThanMinimum(){
+        return maximum.doubleValue() > minimum.doubleValue();
     }
 
     @SuppressWarnings("unchecked")
