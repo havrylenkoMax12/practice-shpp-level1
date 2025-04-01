@@ -50,11 +50,11 @@ public class GenericMatrix<T extends Number> {
         if(minimum instanceof Double || minimum instanceof Float){
             BigDecimal firstBigDecimal = new BigDecimal(first.toString());
             result = firstBigDecimal.multiply(new BigDecimal(second.toString()));
-            //System.out.println(first + " * " + second + " = " + result);
+            System.out.println(first + " * " + second + " = " + result);
         } else if(minimum instanceof Long || minimum instanceof Short || minimum instanceof Integer || minimum instanceof Byte){
             BigInteger firstBigInteger = new BigInteger(first.toString());
             result = firstBigInteger.multiply(new BigInteger(second.toString()));
-            //System.out.println(first.intValue() + " * " + second + " = " + result);
+            System.out.println(first.intValue() + " * " + second + " = " + result);
         }
         return result;
     }
@@ -114,7 +114,6 @@ public class GenericMatrix<T extends Number> {
         } else if (minimum instanceof Long) {
             return (T) Long.valueOf(Math.round(value));
         }else if (minimum instanceof Short) {
-            System.out.println((short) Math.round(value));
             return (T) Short.valueOf((short) Math.round(value));
         }else if (minimum instanceof Byte) {
             return (T) Byte.valueOf((byte) Math.round(value));
