@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
-Test set: com.havrylenko.AppTest
+Test set: com.havrylenko.PropertyLoaderTest
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.043 s -- in com.havrylenko.AppTest
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 1, Time elapsed: 0.008 s -- in com.havrylenko.PropertyLoaderTest

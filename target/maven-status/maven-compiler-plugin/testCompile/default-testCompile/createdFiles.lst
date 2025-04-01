@@ -1,1 +1,4 @@
-com\havrylenko\AppTest.class
+com\havrylenko\GenericMatrixIntegerTest.class
+com\havrylenko\GenericMatrixShortTest.class
+com\havrylenko\GenericMatrixDoubleTest.class
+com\havrylenko\PropertyLoaderTest.class
