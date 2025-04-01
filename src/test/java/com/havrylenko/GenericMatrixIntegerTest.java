@@ -1,22 +1,21 @@
 package com.havrylenko;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.jupiter.api.Test;
 
 /**
  * Unit test for simple App.
  */
-public class GenericMatrixIntegerTest {
+ class GenericMatrixIntegerTest {
 
     //test-Type-Value-Counts
     @Test
-    public void testIntegerPositiveSmall() {
+     void testIntegerPositiveSmall() {
         String minimum = "0";
         String maximum = "1000";
         String increment = "10";
-        String type = "integer";
+        String type = "int";
         PropertyProcessor processor = new PropertyProcessor(type,minimum, maximum, increment);
         Object[] result = processor.startAlgorithm();
 
@@ -27,11 +26,11 @@ public class GenericMatrixIntegerTest {
     }
 
     @Test
-    public void testIntegerAllBig() {
+     void testIntegerAllBig() {
         String minimum = "-10000";
         String maximum = "10000";
         String increment = "10";
-        String type = "integer";
+        String type = "int";
         PropertyProcessor processor = new PropertyProcessor(type, minimum, maximum, increment);
         Object[] result = processor.startAlgorithm();
 
@@ -42,58 +41,58 @@ public class GenericMatrixIntegerTest {
     }
 
     @Test
-    public void testIntegerZeroIncrement() {
+     void testIntegerZeroIncrement() {
         String minimum = "0";
         String maximum = "1000";
         String increment = "0";
-        String type = "integer";
+        String type = "int";
         PropertyProcessor processor = new PropertyProcessor(type, minimum, maximum, increment);
 
         try {
             Object[] result = processor.startAlgorithm();
-            assertEquals(null,result);
+            assertEquals(0,result.length);
         } catch (IllegalArgumentException e) {
             assertEquals("Increment cannot be zero", e.getMessage());
         }
     }
 
     @Test
-    public void testIntegerOutOfRange() {
+     void testIntegerOutOfRange() {
         String minimum = ""+ Math.pow(2,-34);
         String maximum = ""+ Math.pow(2,-34);
         String increment = ""+ Math.pow(2,-34);
-        String type = "integer";
+        String type = "int";
         PropertyProcessor processor = new PropertyProcessor(type, minimum, maximum, increment);
         try {
             Object[] result = processor.startAlgorithm();
-            assertEquals(null,result);
+            assertEquals(0,result.length);
         } catch (IllegalArgumentException e) {
             assertEquals("Increment cannot be zero", e.getMessage());
         }
     }
 
     @Test
-    public void testIntegerLetters() {
+     void testIntegerLetters() {
         String minimum = "0hfjhjjmn";
         String maximum = "1000gfjdkfjhhj";
         String increment = "0uytjh";
-        String type = "integer";
+        String type = "int";
         PropertyProcessor processor = new PropertyProcessor(type, minimum, maximum, increment);
 
         try {
             Object[] result = processor.startAlgorithm();
-            assertEquals(null,result);
+            assertEquals(0,result.length);
         } catch (IllegalArgumentException e) {
             assertEquals("Increment cannot be zero", e.getMessage());
         }
     }
 
     @Test
-    public void testTestParseError() {
+     void testTestParseError() {
         String minimum = "1000.8";
         String maximum = "10000.7";
         String increment = "100";
-        String type = "integer";
+        String type = "int";
         PropertyProcessor processor = new PropertyProcessor(type, minimum, maximum, increment);
         Object[] result = processor.startAlgorithm();
         maximum = roundValueFromString(maximum);

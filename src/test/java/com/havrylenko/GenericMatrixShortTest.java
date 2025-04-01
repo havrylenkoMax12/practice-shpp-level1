@@ -4,11 +4,11 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class GenericMatrixShortTest {
+ class GenericMatrixShortTest {
 
     //test-Type-Value-Counts
     @Test
-    public void testShortPositiveSmall() {
+     void testShortPositiveSmall() {
         String minimum = "0";
         String maximum = "1000";
         String increment = "10";
@@ -23,7 +23,7 @@ public class GenericMatrixShortTest {
     }
 
     @Test
-    public void testShortAllBig() {
+     void testShortAllBig() {
         String minimum = "-2000";
         String maximum = "2000";
         String increment = "10";
@@ -38,7 +38,7 @@ public class GenericMatrixShortTest {
     }
 
     @Test
-    public void testShortZeroIncrement() {
+     void testShortZeroIncrement() {
         String minimum = "0";
         String maximum = "1000";
         String increment = "0";
@@ -47,11 +47,11 @@ public class GenericMatrixShortTest {
 
 
         Object[] result = processor.startAlgorithm();
-        assertEquals(null,result);
+        assertEquals(0,result.length);
     }
 
     @Test
-    public void testShortOutOfRange() {
+     void testShortOutOfRange() {
         String minimum = ""+ Math.pow(10,5);
         String maximum = ""+ Math.pow(10,5);
         String increment = ""+ Math.pow(2,8);
@@ -59,11 +59,11 @@ public class GenericMatrixShortTest {
         PropertyProcessor processor = new PropertyProcessor(type, minimum, maximum, increment);
 
         Object[] result = processor.startAlgorithm();
-        assertEquals(null,result);
+        assertEquals(0,result.length);
     }
 
     @Test
-    public void testShortLetters() {
+     void testShortLetters() {
         String minimum = "0hfjhjjmn";
         String maximum = "1000gfjdkfjhhj";
         String increment = "0uytjh";
@@ -72,11 +72,11 @@ public class GenericMatrixShortTest {
 
 
         Object[] result = processor.startAlgorithm();
-        assertEquals(null,result);
+        assertEquals(0,result.length);
     }
 
     @Test
-    public void testTestParseError() {
+     void testTestParseError() {
         String minimum = "-1000.8";
         String maximum = "10000.7";
         String increment = "100";
@@ -90,7 +90,6 @@ public class GenericMatrixShortTest {
         int size = (Short.parseShort(maximum) - Short.parseShort(minimum)) / Short.parseShort(increment) +1;
         assertEquals(size*size, result.length);
         assertEquals((Short.parseShort(minimum)*Short.parseShort(minimum)) + "",result[0].toString());
-        //assertEquals((Short.parseShort(maximum) * Short.parseShort(maximum)) + "", result[result.length - 1].toString());
     }
 
     private String roundValueFromString(String value) {

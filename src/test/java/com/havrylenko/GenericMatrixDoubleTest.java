@@ -3,14 +3,13 @@ package com.havrylenko;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class GenericMatrixDoubleTest {
+class GenericMatrixDoubleTest {
 
     @Test
-    public void testDoublePositiveSmall() {
+    void testDoublePositiveSmall() {
         String minimum = "-10000.99";
         String maximum = "10000.232";
         String increment = "1000.10";
@@ -21,11 +20,10 @@ public class GenericMatrixDoubleTest {
         int size = (int) ((Double.parseDouble(maximum) - Double.parseDouble(minimum)) / Double.parseDouble(increment)) +1;
         assertEquals(size*size, result.length);
         assertEquals(new BigDecimal(minimum).multiply(new BigDecimal(minimum)) + "",result[0].toString());
-        //assertEquals((BigDecimal.valueOf(Double.parseDouble(maximum)*Double.parseDouble(maximum))) + "",result[result.length-1].toString());
     }
 
     @Test
-    public void testIDoubleAllBig() {
+     void testIDoubleAllBig() {
         String minimum = "-100";
         String maximum = "100";
         String increment = "0.1";
@@ -45,44 +43,18 @@ public class GenericMatrixDoubleTest {
     }
 
     @Test
-    public void testDoubleLetters() {
+     void testDoubleLetters() {
         String minimum = "0hfjhjjmn";
         String maximum = "1000gfjdkfjhhj";
         String increment = "0uytjh";
-        String type = "integer";
+        String type = "double";
         PropertyProcessor processor = new PropertyProcessor(type, minimum, maximum, increment);
 
         try {
             Object[] result = processor.startAlgorithm();
-            assertEquals(null,result);
+            assertEquals(0,result.length);
         } catch (IllegalArgumentException e) {
             assertEquals("Increment cannot be zero", e.getMessage());
-        }
-    }
-
-    @Test
-    public void testTestParseError() {
-        String minimum = "1000.8";
-        String maximum = "10000.7";
-        String increment = "100";
-        String type = "integer";
-        PropertyProcessor processor = new PropertyProcessor(type, minimum, maximum, increment);
-        Object[] result = processor.startAlgorithm();
-        maximum = roundValueFromString(maximum);
-        minimum = roundValueFromString(minimum);
-        increment = roundValueFromString(increment);
-
-        int size = (Integer.parseInt(maximum) - Integer.parseInt(minimum)) / Integer.parseInt(increment) +1;
-        assertEquals(size*size, result.length);
-        assertEquals((Integer.parseInt(minimum)*Integer.parseInt(minimum)) + "",result[0].toString());
-        assertEquals((Integer.parseInt(maximum) * Integer.parseInt(maximum)) + "", result[result.length - 1].toString());
-    }
-
-    private String roundValueFromString(String value) {
-        try {
-            return Math.round(Double.parseDouble(value)) + "";
-        }catch (NumberFormatException e){
-            return value;
         }
     }
 }

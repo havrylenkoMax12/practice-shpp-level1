@@ -15,7 +15,9 @@ public class PropertyLoader {
     private static final String DEFAULT_INCREMENT = "1";
     private static final String DEFAULT_TYPE = "int";
 
-
+    private static final String MINIMUM_KEY = "minimum";
+    private static final String MAXIMUM_KEY = "maximum";
+    private static final String INCREMENT_KEY = "increment";
     private static PropertyLoader instance;
     private Map<String,String> allProperties;
 
@@ -29,17 +31,14 @@ public class PropertyLoader {
         allProperties.put("type", System.getProperty("type", DEFAULT_TYPE));
 
         try (InputStream input = PropertyLoader.class.getClassLoader().getResourceAsStream(filename)) {
-            if (input == null) {
-                System.err.println(filename + " not found");
-            }
             properties.load(new InputStreamReader(input, StandardCharsets.UTF_8));
-            allProperties.put("minimum", properties.getProperty("minimum", DEFAULT_MINIMUM));
-            allProperties.put("maximum", properties.getProperty("maximum", DEFAULT_MAXIMUM));
-            allProperties.put("increment", properties.getProperty("increment", DEFAULT_INCREMENT));
+            allProperties.put(MINIMUM_KEY, properties.getProperty(MINIMUM_KEY, DEFAULT_MINIMUM));
+            allProperties.put(MAXIMUM_KEY, properties.getProperty(MAXIMUM_KEY, DEFAULT_MAXIMUM));
+            allProperties.put(INCREMENT_KEY, properties.getProperty(INCREMENT_KEY, DEFAULT_INCREMENT));
         } catch (IOException | NullPointerException e) {
-            allProperties.put("minimum", DEFAULT_MINIMUM);
-            allProperties.put("maximum", DEFAULT_MAXIMUM);
-            allProperties.put("increment", DEFAULT_INCREMENT);
+            allProperties.put(MINIMUM_KEY, DEFAULT_MINIMUM);
+            allProperties.put(MAXIMUM_KEY, DEFAULT_MAXIMUM);
+            allProperties.put(INCREMENT_KEY, DEFAULT_INCREMENT);
         }
     }
 

@@ -2,7 +2,7 @@ package com.havrylenko;
 
 public class PropertyProcessor {
 
-    private static final String FILENAME = "application1.properties";
+    private static final String FILENAME = "application.properties";
 
     private final String type;
     private final String minimum;
@@ -34,7 +34,6 @@ public class PropertyProcessor {
                     GenericMatrix<Short> matrixShort = getShortGenericMatrix();
                     return matrixShort.calculate();
                 case "int":
-                case "integer":
                     GenericMatrix<Integer> matrixInt = getIntegerGenericMatrix();
                     return matrixInt.calculate();
                 case "long":
@@ -46,12 +45,14 @@ public class PropertyProcessor {
                 case "double":
                     GenericMatrix<Double> matrixDouble = getDoubleGenericMatrix();
                     return matrixDouble.calculate();
+                    default:
+                        return new Object[0];
             }
         }catch(NumberFormatException e){
             //noinspection CallToPrintStackTrace
             e.printStackTrace();
         }
-        return null;
+        return new Object[0];
     }
 
     private GenericMatrix<Byte> getByteGenericMatrix() {

@@ -41,7 +41,7 @@ public class GenericMatrix<T extends Number> {
         } catch (RuntimeException e) {
             //noinspection CallToPrintStackTrace
             e.printStackTrace();
-            return null;
+            return new Object[0];
         }
     }
 
@@ -61,7 +61,7 @@ public class GenericMatrix<T extends Number> {
 
     private List<T> fillList() {
         if (increment.doubleValue() <= 0) {
-            throw new RuntimeException("Increment must be greater than zero");
+            throw new IllegalArgumentException("Increment must be greater than zero");
         }
 
         double current;
@@ -85,15 +85,9 @@ public class GenericMatrix<T extends Number> {
             counter++;
 
             if (counter >= THRESHOLD) {
-                System.out.println("Counter more than threshold");
                 break;
             }
         }
-        /*
-        if(current > maximumValue){
-            numbers.add(convertToT(maximumValue));
-        }
-        */
 
         return numbers;
     }
