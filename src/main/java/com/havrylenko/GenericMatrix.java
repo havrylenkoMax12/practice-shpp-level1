@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GenericMatrix<T extends Number> {
-    private static final int THRESHOLD = 100000;
+    private static final int THRESHOLD = 10000;
 
     private final Number minimum;
     private final Number maximum;
@@ -32,8 +32,8 @@ public class GenericMatrix<T extends Number> {
                     T first = numbers.get(i);
                     T second = number;
 
-                    Object sum = printT(first, second);
-                    resultedArray[counter++] = sum;
+                    Object resultMultiply = printT(first, second);
+                    resultedArray[counter++] = resultMultiply;
                 }
             }
 
@@ -46,49 +46,58 @@ public class GenericMatrix<T extends Number> {
     }
 
     private Object printT(T first, T second){
-        double resultValue = first.doubleValue() * second.doubleValue();
         Object result = null;
         if(minimum instanceof Double || minimum instanceof Float){
-            result = BigDecimal.valueOf(resultValue);
-            System.out.println(first + " * " + second + " = " + result);
-            return result;
+            BigDecimal firstBigDecimal = new BigDecimal(first.toString());
+            result = firstBigDecimal.multiply(new BigDecimal(second.toString()));
+            //System.out.println(first + " * " + second + " = " + result);
         } else if(minimum instanceof Long || minimum instanceof Short || minimum instanceof Integer || minimum instanceof Byte){
-            result = BigInteger.valueOf(Math.round(resultValue));
-            System.out.println(first.intValue() + " * " + second + " = " + result);
+            BigInteger firstBigInteger = new BigInteger(first.toString());
+            result = firstBigInteger.multiply(new BigInteger(second.toString()));
+            //System.out.println(first.intValue() + " * " + second + " = " + result);
         }
         return result;
     }
 
     private List<T> fillList() {
-        if (increment.floatValue() == 0) {
+        if (increment.doubleValue() <= 0) {
             throw new RuntimeException("Increment must be greater than zero");
         }
-        int counter = 0;
 
         double current;
         double maximumValue;
-        double incrementValue = Math.abs(increment.floatValue());
-        if(isMaximumBiggerThanMinimum()){
+        double incrementValue = Math.abs(increment.doubleValue());
+
+        if (isMaximumBiggerThanMinimum()) {
             current = minimum.doubleValue();
             maximumValue = maximum.doubleValue();
-        }else{
+        } else {
             current = maximum.doubleValue();
             maximumValue = minimum.doubleValue();
         }
 
         List<T> numbers = new ArrayList<>();
+        int counter = 0;
 
         while (current <= maximumValue) {
-            counter++;
             numbers.add(convertToT(current));
-            current+= incrementValue;
+            current = Math.round((current + incrementValue) * 1_000_000) / 1_000_000.0;
+            counter++;
+
             if (counter >= THRESHOLD) {
                 System.out.println("Counter more than threshold");
                 break;
             }
         }
+        /*
+        if(current > maximumValue){
+            numbers.add(convertToT(maximumValue));
+        }
+        */
+
         return numbers;
     }
+
 
     private boolean isMaximumBiggerThanMinimum(){
         return maximum.doubleValue() > minimum.doubleValue();
@@ -105,6 +114,7 @@ public class GenericMatrix<T extends Number> {
         } else if (minimum instanceof Long) {
             return (T) Long.valueOf(Math.round(value));
         }else if (minimum instanceof Short) {
+            System.out.println((short) Math.round(value));
             return (T) Short.valueOf((short) Math.round(value));
         }else if (minimum instanceof Byte) {
             return (T) Byte.valueOf((byte) Math.round(value));

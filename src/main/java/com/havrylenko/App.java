@@ -6,6 +6,6 @@ package com.havrylenko;
 public class App {
     public static void main(String[] args) {
         PropertyProcessor processor = new PropertyProcessor();
-        processor.processProperties();
+        processor.startAlgorithm();
     }
 }

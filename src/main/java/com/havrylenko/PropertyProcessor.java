@@ -2,63 +2,56 @@ package com.havrylenko;
 
 public class PropertyProcessor {
 
+    private static final String FILENAME = "application1.properties";
+
     private final String type;
     private final String minimum;
     private final String maximum;
     private final String increment;
 
     public PropertyProcessor() {
-        PropertyLoader loader = PropertyLoader.getInstance();
-        this.type = loader.getProperty("type");
-        this.minimum = loader.getProperty("minimum");
-        this.maximum = loader.getProperty("maximum");
-        this.increment = loader.getProperty("increment");
+        PropertyLoader loader = PropertyLoader.getInstance(FILENAME);
+        this.type = loader.getProperty("type").replace(" ","");
+        this.minimum = loader.getProperty("minimum").replace(" ","");
+        this.maximum = loader.getProperty("maximum").replace(" ","");
+        this.increment = loader.getProperty("increment").replace(" ","");
     }
 
     public PropertyProcessor(String type,String minimum,String maximum,String increment) {
-        this.type = type;
-        this.minimum = minimum;
-        this.maximum = maximum;
-        this.increment = increment;
+        this.type = type.replace(" ","");
+        this.minimum = minimum.replace(" ","");
+        this.maximum = maximum.replace(" ","");
+        this.increment = increment.replace(" ","");
     }
 
-    public void processProperties() {
-        if (Float.parseFloat(increment) == 0) {
-            System.out.println("Increment must be another than zero");
-            return;
+    public Object[] startAlgorithm() {
+        try {
+            switch (type.toLowerCase()) {
+                case "byte":
+                    GenericMatrix<Byte> matrixByte = getByteGenericMatrix();
+                    return matrixByte.calculate();
+                case "short":
+                    GenericMatrix<Short> matrixShort = getShortGenericMatrix();
+                    return matrixShort.calculate();
+                case "int":
+                case "integer":
+                    GenericMatrix<Integer> matrixInt = getIntegerGenericMatrix();
+                    return matrixInt.calculate();
+                case "long":
+                    GenericMatrix<Long> matrixLong = getLongGenericMatrix();
+                    return matrixLong.calculate();
+                case "float":
+                    GenericMatrix<Float> matrixFloat = getFloatGenericMatrix();
+                    return matrixFloat.calculate();
+                case "double":
+                    GenericMatrix<Double> matrixDouble = getDoubleGenericMatrix();
+                    return matrixDouble.calculate();
+            }
+        }catch(NumberFormatException e){
+            //noinspection CallToPrintStackTrace
+            e.printStackTrace();
         }
-
-        chooseType();
-    }
-
-    private void chooseType() {
-        switch (type.toLowerCase()) {
-            case "byte":
-                GenericMatrix<Byte> matrixByte = getByteGenericMatrix();
-                matrixByte.calculate();
-                break;
-            case "short":
-                GenericMatrix<Short> matrixShort = getShortGenericMatrix();
-                matrixShort.calculate();
-                break;
-            case "int":
-            case "integer":
-                GenericMatrix<Integer> matrixInt = getIntegerGenericMatrix();
-                matrixInt.calculate();
-                break;
-            case "long":
-                GenericMatrix<Long> matrixLong = getLongGenericMatrix();
-                matrixLong.calculate();
-                break;
-            case "float":
-                GenericMatrix<Float> matrixFloat = getFloatGenericMatrix();
-                matrixFloat.calculate();
-                break;
-            case "double":
-                GenericMatrix<Double> matrixDouble = getDoubleGenericMatrix();
-                matrixDouble.calculate();
-                break;
-        }
+        return null;
     }
 
     private GenericMatrix<Byte> getByteGenericMatrix() {
@@ -67,9 +60,9 @@ public class PropertyProcessor {
         byte incrementByteForm;
 
         try {
-            minByteForm = Byte.parseByte(minimum);
-            maxByteForm = Byte.parseByte(maximum);
-            incrementByteForm = Byte.parseByte(increment);
+            minByteForm = Byte.parseByte(roundValueFromString(minimum));
+            maxByteForm = Byte.parseByte(roundValueFromString(maximum));
+            incrementByteForm = Byte.parseByte(roundValueFromString(increment));
         } catch (NumberFormatException e) {
             throw new NumberFormatException("Invalid arguments for Byte use: -128 to 127");
         }
@@ -83,9 +76,9 @@ public class PropertyProcessor {
         short incrementShortForm;
 
         try {
-            minShortForm = Short.parseShort(minimum);
-            maxShortForm = Short.parseShort(maximum);
-            incrementShortForm = Short.parseShort(increment);
+            minShortForm = Short.parseShort(roundValueFromString(minimum));
+            maxShortForm = Short.parseShort(roundValueFromString(maximum));
+            incrementShortForm = Short.parseShort(roundValueFromString(increment));
         } catch (NumberFormatException e) {
             throw new NumberFormatException("Invalid arguments for Short use: -32768 to 32767");
         }
@@ -99,9 +92,9 @@ public class PropertyProcessor {
         int incrementIntForm;
 
         try {
-            minIntForm = Integer.parseInt(minimum);
-            maxIntForm = Integer.parseInt(maximum);
-            incrementIntForm = Integer.parseInt(increment);
+            minIntForm = Integer.parseInt(roundValueFromString(minimum));
+            maxIntForm = Integer.parseInt(roundValueFromString(maximum));
+            incrementIntForm = Integer.parseInt(roundValueFromString(increment));
         } catch (NumberFormatException e) {
             throw new NumberFormatException("Invalid arguments for Integer use: -2147483648 to 2147483647");
         }
@@ -115,9 +108,9 @@ public class PropertyProcessor {
         long incrementLongForm;
 
         try {
-            minLongForm = Long.parseLong(minimum);
-            maxLongForm = Long.parseLong(maximum);
-            incrementLongForm = Long.parseLong(increment);
+            minLongForm = Long.parseLong(roundValueFromString(minimum));
+            maxLongForm = Long.parseLong(roundValueFromString(maximum));
+            incrementLongForm = Long.parseLong(roundValueFromString(increment));
         } catch (NumberFormatException e) {
             throw new NumberFormatException("Invalid arguments for Long use: -9223372036854775808 to 9223372036854775807");
         }
@@ -157,4 +150,11 @@ public class PropertyProcessor {
         return new GenericMatrix<>(minDoubleForm, maxDoubleForm, incrementDoubleForm);
     }
 
+    private String roundValueFromString(String value) {
+        try {
+            return Math.round(Double.parseDouble(value)) + "";
+        }catch (NumberFormatException e){
+            return value;
+        }
+    }
 }
